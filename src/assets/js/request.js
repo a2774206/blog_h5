@@ -13,6 +13,9 @@ let token = window.localStorage.getItem('token');
 let baseURL = {
 	api_host:'https://blog-api.lipengpeng.com'
 }
+// let baseURL = {
+// 	api_host:'http://127.0.0.1:8000'
+// }
 
 let pending = []; //声明一个数组用于存储每个ajax请求的取消函数和ajax标识
 let cancelToken = axios.CancelToken;

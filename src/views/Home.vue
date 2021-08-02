@@ -20,16 +20,16 @@
 				<div class="container_left">
 					<v-text-field append-icon="mdi-magnify" label="搜索关键字" @click:append="searchFilter" v-model="searchText" :suffix="tab">
 					</v-text-field>
-					<div class="artcle">
-						<v-skeleton-loader class="mx-auto" type="heading, table-cell@1,text,sentences,actions" v-for="(items,index) in pageSize" :key='index' v-if="artclesArr.length == 0 && loadend"></v-skeleton-loader>
+					<div class="article">
+						<v-skeleton-loader class="mx-auto" type="heading, table-cell@1,text,sentences,actions" v-for="(items,index) in pageSize" :key='index' v-if="articlesArr.length == 0 && loadend"></v-skeleton-loader>
 
-						<div class="artcleList" v-for="items in artclesArr">
-							<router-link tag="h4" :to="{path:'artcle',query:{id:items.uuid}}">{{items.title}}</router-link>
+						<div class="articleList" v-for="items in articlesArr">
+							<router-link tag="h4" :to="{path:'article',query:{id:items.uuid}}">{{items.title}}</router-link>
 							<p class="small_text"><small>{{items.created_time|timeFilter}} | {{items.tag.tabname}}</small></p>
-							<div class="artcle_content">{{items.content|numlimit(1)}}</div>
+							<div class="article_content">{{items.content|numlimit(1)}}</div>
 							<p class="redAllText">
 								<v-icon></v-icon>
-								<router-link tag="span" :to="{path:'artcle',query:{id:items.uuid}}">
+								<router-link tag="span" :to="{path:'article',query:{id:items.uuid}}">
 									<v-btn class="ma-2" color="cyan" dark>
 										阅读全文
 										<v-icon dark right>mdi-book-open</v-icon>
@@ -38,7 +38,7 @@
 							</p>
 						</div>
 						<div class="text-center" style="margin-top: 10px;">
-							<v-pagination v-if="artclesArr.length > 0" color="cyan" v-model="pageNum" :length="allPageNum" :total-visible="allPageNum"
+							<v-pagination v-if="articlesArr.length > 0" color="cyan" v-model="pageNum" :length="allPageNum" :total-visible="allPageNum"
 							 @input="pageChange"></v-pagination>
 						</div>
 					</div>
@@ -49,7 +49,7 @@
 					<v-card class="mx-auto"  tile>
 						<v-list shaped>
 							<v-subheader>分类</v-subheader>
-							<v-skeleton-loader class="mx-auto" type="list-item@6"  v-if="artclesArr.length == 0 && loadend"></v-skeleton-loader>
+							<v-skeleton-loader class="mx-auto" type="list-item@6"  v-if="articlesArr.length == 0 && loadend"></v-skeleton-loader>
 							<v-list-item-group v-model="item" color="primary" v-else>
 								<v-list-item v-for="(items, i) in classItems" :key="i" @click="selectClass(items)">
 
@@ -85,7 +85,7 @@
 			classUuid: '',
 			classItems: [],
 			allPageNum: 0,
-			artclesArr: [],
+			articlesArr: [],
 			loadend: false,
 			tab: '全部',
 			item: 0
@@ -124,8 +124,7 @@
 		mounted() {
 			this.loadend = true;
 			this.articles_get_init()
-			this.class_get_init();
-			
+			this.class_get_init();	
 		},
 		methods: {
 			selectClass(o) {
@@ -183,15 +182,16 @@
 					classUuid: this.classUuid
 				}, (res) => {
 					this.loadend = false;
-					this.artclesArr = res.data;
+					this.articlesArr = res.data;
 					this.allPageNum = Math.ceil(res.count / this.pageSize);
-					console.log(this.artclesArr)
+					console.log(this.articlesArr)
 				})
 			}
 		}
 	}
 </script>
 <style scoped lang="less">
+	
 	@media screen and (min-width:320px) and (max-width:913px) {
 		.line_s {
 			display: none;
@@ -242,11 +242,11 @@
 			bottom: 100px;
 		}
 
-		.artcle {
+		.article {
 			clear: both;
 			padding-bottom: 80px;
 
-			.artcleList {
+			.articleList {
 				margin: 26px 2px;
 				padding-bottom: 12px;
 				border-bottom: 1px dashed #dedbdb;
@@ -267,9 +267,10 @@
 					font-size: 16px;
 				}
 
-				.artcle_content {
+				.article_content {
 					font-size: 16px;
 					color: #666;
+					overflow: hidden;
 					letter-spacing: 1px;
 				}
 			}

@@ -7,7 +7,7 @@ import router from './router'
 
 import request from './assets/js/request.js'
 Vue.prototype.request = request;
-console.log('挂载时间' + new Date())
+
 import vuetify from './plugins/vuetify';
 
 import './components/Toast/Toast.css';

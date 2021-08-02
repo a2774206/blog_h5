@@ -10,9 +10,9 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },{
-	path: '/artcle',
-    name: 'artcle',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Artcle.vue')
+	path: '/article',
+    name: 'article',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Article.vue')
   },{	
 	meta:{
 		auth:true

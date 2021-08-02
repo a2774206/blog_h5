@@ -16,27 +16,26 @@
 		</v-app-bar>
 
 		<v-content class="container-max">
-			<div class="artcle_left">
+			<div class="article_left">
 				
-				<div v-if="showArtcle">
+				<div v-if="showarticle">
 					<center>
-						<h2 style="padding: 0 20px;">{{artcle.title}}</h2>
+						<h2 style="padding: 0 20px;">{{article.title}}</h2>
 					</center>
-					<center class="small-line"><router-link to='/' tag='span'><v-btn x-small color="secondary" icon dark><v-icon>mdi-home</v-icon></v-btn></router-link><small> 上次修改时间：{{artcle.updated_time|timeFilter}}| {{artcle.author}} | 分类：{{artcle && artcle.tag && artcle.tag.tabname}}</small></center>
-					<div class="artcle-content">
-						<mavon-editor v-model="artcle.content"  :editable="false" :ishljs="true" :subfield="false" :toolbars='toolbars' :boxShadow="false" defaultOpen="preview" :toolbarsFlag="false" />
-						<!-- <pre class="post-content" v-highlight v-html="artcle.content"></pre> -->
+					<center class="small-line"><router-link to='/' tag='span'><v-btn x-small color="secondary" icon dark><v-icon>mdi-home</v-icon></v-btn></router-link><small> 上次修改时间：{{article.updated_time|timeFilter}}| {{article.author}} | 分类：{{article && article.tag && article.tag.tabname}}</small></center>
+					<div class="article-content">
+						<mavon-editor v-model="article.content"  :editable="false" :ishljs="true" :subfield="false" :toolbars="toolbars" :boxShadow="false" defaultOpen="preview" :toolbarsFlag="false" />
+						<!-- <pre class="post-content" v-highlight v-html="article.content"></pre> -->
 					</div>
 				</div>
 			</div>
 			
-			<div class="artcle_right">
+			<div class="article_right">
 				 <v-card class="mx-auto"  tile>
 				 	<v-list rounded>
 				 		<v-subheader>文章推荐</v-subheader>
 				 		<v-list-item-group v-model="item" color="primary">
-				 			<v-list-item v-for="(items, i) in artcleList" :key="i" @click="clickArtcle(items.uuid)">
-				 
+				 			<v-list-item v-for="(items, i) in articleList" :key="i" @click="clickarticle(items.uuid)">
 				 				<v-list-item-content>
 				 					<v-list-item-title>{{items.title}}</v-list-item-title>
 				 				</v-list-item-content>
@@ -61,9 +60,9 @@
 		name: 'Home',
 		data: () => ({
 			item:-1,
-			artcle: {},
-			artcleList:[],
-			showArtcle:false,
+			article: {},
+			articleList:[],
+			showarticle:false,
 			 toolbars: {
 			        bold: true, // 粗体
 			        italic: true, // 斜体
@@ -118,8 +117,8 @@
 			}
 		},
 		mounted() {
-			this.getArtcleInfo();
-			this.getArtcleList();
+			this.getarticleInfo();
+			this.getarticleList();
 		},
 		directives:{
 			highlight:(el)=>{
@@ -130,15 +129,15 @@
 			}
 		},
 		methods: {
-			clickArtcle(uuid){
-				this.$router.replace('/artcle?id='+uuid);
-				this.getArtcleInfo();
+			clickarticle(uuid){
+				this.$router.replace('/article?id='+uuid);
+				this.getarticleInfo();
 			},
-			getArtcleInfo() {
-				this.showArtcle = false;
+			getarticleInfo() {
+				this.showarticle = false;
 				this.request.API_articles_detail(this.$route.query.id, (res) => {
-					this.showArtcle = true;
-					this.artcle = res.data[0];
+					this.showarticle = true;
+					this.article = res.data[0];
 					let Timer,_this = this;
 					
 					async function highlighthandle(){
@@ -153,13 +152,13 @@
 					
 				})
 			},
-			getArtcleList(){
+			getarticleList(){
 				this.request.API_articles_find({
 					pageSize: 8,
 					pageNum: 1,
 					keywords: ''
 				}, (res) => {
-					this.artcleList = res.data;
+					this.articleList = res.data;
 				})
 			},
 			topEvent() {
@@ -187,7 +186,7 @@
 				padding-left: 0 !important;
 				padding-right: 0 !important;
 			}
-			.artcle_right{
+			.article_right{
 				width: 100% !important;
 			}
 		}
@@ -212,11 +211,11 @@
 			padding: 16px !important;
 		}
 		.container-max{
-			.artcle-content{
+			.article-content{
 				padding: 10px 19px !important;
 			}
 		}
-		.artcle_left{
+		.article_left{
 			width: 100% !important;
 		}
 	}
@@ -241,11 +240,11 @@
 			color: #999;
 		}
 		
-		.artcle {
+		.article {
 			clear: both;
 			padding-bottom: 80px;
 			
-			.artcleList {
+			.articleList {
 				margin: 26px 2px;
 				padding-bottom: 12px;
 				border-bottom: 1px dashed #dedbdb;
@@ -265,7 +264,7 @@
 					font-size: 16px;
 				}
 
-				.artcle_content {
+				.article_content {
 					font-size: 16px;
 					color: #666;
 					letter-spacing: 1px;
@@ -282,14 +281,14 @@
 		z-index: 0;
 		margin-top: 40px;
 		padding: 64px 30px 20px 30px !important;
-		.artcle-content {
+		.article-content {
 			padding: 30px 20px !important;
 		}
-		.artcle_left{
+		.article_left{
 			width: 70%;
 			float: left;
 		}
-		.artcle_right{
+		.article_right{
 			width: 25%;
 			float: right;
 		}
